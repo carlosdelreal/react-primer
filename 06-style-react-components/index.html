@@ -31,11 +31,11 @@
         </style>
         <div id="root"></div>
         <script type="text/babel">
-            function Box({style, size, className = '', ...rest}) {
+            function Box({style, size, ...rest}) {
                 const sizeClassName= size ? `box--${size}` : '';
                 return (
                     <div
-                        className={`box ${className} ${sizeClassName}`}
+                        className={`box ${sizeClassName}`}
                         style={{paddingLeft: 20, ...style}}
                         {...rest}
                     >
