@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rerender a React Application</title>
+    <script crossorigin src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            function tick(params) {
+                const rootElement = document.getElementById('root');
+                const time = new Date().toLocaleTimeString();
+                const element = <div>It is <input type="text" value={time}/></div>
+                ReactDOM.render(element, rootElement);
+            }
+            tick();
+            setInterval(tick, 1000);
+        </script>
+    </body>
+</html>
