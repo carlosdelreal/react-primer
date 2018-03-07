@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Stop Memory Leaks with componentWillUnmount Lifecycle Method in React</title>
+        <script crossorigin src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+        <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+        <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    </head>
+    <style>
+        div {
+            text-align: center;
+        }
+        .stop-watch label {
+            font-size: 5rem;
+            display: block;
+        }
+        button {
+            border: 1px solid #ccc;
+            background: #fff;
+            font-size: 2rem;
+            margin: 5px;
+            padding: 15px;
+            width: 200px;
+        }
+    </style>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            class StopWatch extends React.Component {
+
+                constructor() {
+                    super();
+                    this.handleRunClick = this.handleRunClick.bind(this);
+                    this.handleClearClick = this.handleClearClick.bind(this);
+
+                    // get initial state
+                    this.state = {
+                        lapse: 0,
+                        running: false
+                    }
+                }
+
+                handleRunClick() {
+                    this.setState(state => {
+                        if (state.running) {
+                            clearInterval(this.timer);
+                        } else {
+                            const startTime = Date.now() - this.state.lapse;
+                            this.timer = setInterval(() => {
+                                this.setState({
+                                    lapse: Date.now() - startTime
+                                },
+                                    () => {
+                                        console.log(this.state.lapse)
+                                    }
+                                );
+                            });
+                        }
+                        return {running: !state.running};
+                    });
+                }
+
+                handleClearClick() {
+                    clearInterval(this.timer);
+                    this.setState({
+                        lapse: 0,
+                        running: false
+                    });
+                }
+
+                componentWillUnmount() {
+                    clearInterval(this.timer);
+                }
+
+                render() {
+                    const {lapse, running} = this.state;
+                    return (
+                        <div className="stop-watch">
+                            <label>{lapse}ms</label>
+                            <button onClick={ this.handleRunClick }>{running ? 'Stop' : 'Start'}</button>
+                            <button onClick={ this.handleClearClick }>Clear</button>
+                        </div>
+                    )
+                }
+            }
+
+            class App extends React.Component {
+
+                constructor() {
+                    super()
+                    this.state = {showStopWatch: true}
+                }
+
+                render() {
+                    const {showStopWatch} = this.state
+                    return (
+                        <div>
+                            <label>
+                            Show Stop Watch{' '}
+                            <input
+                                type="checkbox"
+                                checked={showStopWatch}
+                                onChange={
+                                    () => this.setState(state => ({ showStopWatch: !state.showStopWatch }))
+                                }
+                            />
+                            </label>
+                            <hr />
+                            {showStopWatch ? <StopWatch /> : null}
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render( <App />, document.getElementById('root') );
+
+        </script>
+    </body>
+</html>
