@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Use the key prop when Rendering a List with React</title>
+        <script crossorigin src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+        <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    </head>
+    <body>
+
+        <div id="root"></div>
+
+        <script type="text/babel">
+
+                class App extends React.Component {
+                    static allItems = [
+                        {id: 'a', value: 'apple'},
+                        {id: 'o', value: 'orange'},
+                        {id: 'g', value: 'grape'},
+                        {id: 'p', value: 'pear'},
+                    ]
+
+                    render() {
+                        return (
+                            <ul>
+                                {App.allItems.map(item => (
+                                    <li key={item.id}>{item.value}</li>
+                                ))}
+                            </ul>
+                        )
+                    }
+                }
+
+                ReactDOM.render(<App />, document.getElementById('root'));
+
+            </script>
+    </body>
+</html>
